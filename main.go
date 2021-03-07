@@ -4,9 +4,12 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
+
+	"github.com/ryoukata/trace"
 )
 
 // templ return one template
@@ -28,6 +31,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "Application Address")
 	flag.Parse()
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	// root
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
