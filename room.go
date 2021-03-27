@@ -20,16 +20,19 @@ type room struct {
 	clients map[*client]bool
 	// tracer receives Logs operated on ChatRoom.
 	tracer trace.Tracer
+	// avatar receive Avatar's Info.
+	avatar Avatar
 }
 
 // newRoom create ChatRoom to be able to use right now and return this ChatRoom
-func newRoom() *room {
+func newRoom(avatar Avatar) *room {
 	return &room{
 		forward: make(chan *message),
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
+		avatar:  avatar,
 	}
 }
 
