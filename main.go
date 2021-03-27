@@ -49,7 +49,8 @@ func main() {
 		google.New("", "", "http://localhost:8080/auth/callback/google"),
 	)
 
-	r := newRoom()
+	// r := newRoom(UseAuthAvatar)
+	r := newRoom(UseGravatar)
 	r.tracer = trace.New(os.Stdout)
 	// root
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
