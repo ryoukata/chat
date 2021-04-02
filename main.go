@@ -50,7 +50,8 @@ func main() {
 	)
 
 	// r := newRoom(UseAuthAvatar)
-	r := newRoom(UseGravatar)
+	// r := newRoom(UseGravatar)
+	r := newRoom(UseFileSystemAvatar)
 	r.tracer = trace.New(os.Stdout)
 	// root
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
@@ -67,6 +68,9 @@ func main() {
 		w.Header()["Location"] = []string{"/chat"}
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
+	http.HandleFunc("/uploader", uploaderHandler)
+	http.Handle("/avatars/", http.StripPrefix("/avatars/", http.FileServer(http.Dir("./avatars"))))
 	// start ChatRoom
 	go r.run()
 	// start Web Server
