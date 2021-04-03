@@ -17,6 +17,12 @@ import (
 	"github.com/stretchr/objx"
 )
 
+// implementation for current active Avatar
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar}
+
 // templ return one template
 type templateHandler struct {
 	once     sync.Once
@@ -51,7 +57,7 @@ func main() {
 
 	// r := newRoom(UseAuthAvatar)
 	// r := newRoom(UseGravatar)
-	r := newRoom(UseFileSystemAvatar)
+	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 	// root
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
